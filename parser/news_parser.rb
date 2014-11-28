@@ -17,11 +17,13 @@ class NewsParser
   end
 
   def news_title
-    @doc.css("#h1title").text
+    tmp = @doc.css("#h1title")
+    tmp.text if tmp != nil
   end
 
   def news_category
-    @doc.css(".ep-crumb")[-1].text
+    tmp = @doc.css(".ep-crumb")[-1]
+    tmp.text if tmp != nil
   end
 
   def news_pub_date
@@ -47,8 +49,19 @@ class NewsParser
   def news_image
     images = []
     @doc.css("div#endText").children.each do |node|
-      if node.attribute("class").to_s == "f_center"
-        images.push(node.children.attribute("src").text)
+      if node.attribute("class") != nil
+        if node.attribute("class").text == "f_center" || node.attribute("class").text == "center"
+          if node.node_name.to_s == "p"
+            node.children.each do |sub_node|
+              if sub_node.node_name == "img"
+                if sub_node.attribute("src")
+                  puts sub_node.attribute("src")
+                  #images.push(sub_node.attribute("src").text)
+                end
+              end
+            end
+          end
+        end
       end
     end
     images
