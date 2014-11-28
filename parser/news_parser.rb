@@ -55,8 +55,7 @@ class NewsParser
             node.children.each do |sub_node|
               if sub_node.node_name == "img"
                 if sub_node.attribute("src")
-                  puts sub_node.attribute("src")
-                  #images.push(sub_node.attribute("src").text)
+                  images.push(sub_node.attribute("src").text)
                 end
               end
             end

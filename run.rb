@@ -1,14 +1,16 @@
+#!/usr/bin/ruby
+
 require "spidr"
 require 'nokogiri'
 require 'open-uri'
 require 'time'
 require_relative 'parser/news_parser'
+require_relative "database/news_db"
+
+include NewsDB
 
 def news_url_to_news(url)
   parser_result = NewsParser.new(url)
-  puts "==="
-  parser_result.news_image
-  puts "==="
   {
     title: parser_result.news_title,
     category: parser_result.news_category,
@@ -20,13 +22,14 @@ def news_url_to_news(url)
   }
 end
 
+# ++
+# main
+# ++
 Spidr.site('http://news.163.com/') do |spider|
   spider.every_page do |page|
-    puts "[-] #{page.url} :  #{page.content_type} : #{page.title}"
-    if page.url.to_s =~ /html/
-      puts news_url_to_news(page.url.to_s)
-    else
-      puts "not a news url"
+    #puts "[-] #{page.url} :  #{page.content_type} : #{page.title}"
+    if page.url.to_s =~ /html$/
+      save_news(news_url_to_news(page.url.to_s))
     end
   end
 end
