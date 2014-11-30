@@ -28,7 +28,7 @@ module NewsDB
         table.column :category, :string
         table.column :pub_date, :string
         table.column :from_site, :string
-        table.column :image, :string
+        table.column :image, :text
         table.column :video, :string
         table.column :text, :text
       end
