@@ -8,26 +8,16 @@ end
 module DatabaseEngine
   def self.save(object)
     if object.respond_to?("database_to_save") && object.respond_to?("table_to_save")
-      if table_exists?(object.database_to_save, object.table_to_save + 's')
-        begin
-          Kernel.const_get(object.table_to_save.capitalize + 's').new(object).save!
-        rescue
-          if Kernel.const_set(object.table_to_save.capitalize + "s", Class.new(ActiveRecord::Base)).new(object).save!
-            puts "Info: object saved"
-          else
-            puts "Error: object saved failed"
-          end
-        end
-      else
+      if !table_exists?(object.database_to_save, object.table_to_save + 's')
         setup_table(object.database_to_save, object.table_to_save + 's', object.keys)
-        begin
-          Kernel.const_get(object.table_to_save.capitalize + 's').new(object).save!
-        rescue
-          if Kernel.const_set(object.table_to_save.capitalize + 's', Class.new(ActiveRecord::Base)).new(object).save!
-            puts "Info: object"
-          else
-            puts "Error: object saved failed"
-          end
+      end
+      begin
+        Kernel.const_get(object.table_to_save.capitalize + 's').new(object).save!
+      rescue
+        if Kernel.const_set(object.table_to_save.capitalize + "s", Class.new(ActiveRecord::Base)).new(object).save!
+          puts "Info: object saved"
+        else
+          puts "Error: object saved failed"
         end
       end
     else
