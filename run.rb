@@ -48,7 +48,6 @@ end
 # ++
 # main
 # ++
-
 $VERBOSE = nil
 
 options = {}
