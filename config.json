@@ -1,0 +1,7 @@
+[
+    {
+        "site": "http://news.163.com/",
+        "mode": "single",
+        "parser": "NeteaseNewsParser"
+    }
+]
