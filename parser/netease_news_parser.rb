@@ -1,5 +1,6 @@
 require_relative "parser_engine"
-require_relative "parser_result"
+require_relative "netease_news_result"
+require_relative "sentiment_analysis"
 
 class NeteaseNewsParser < ParserEngine
   require "nokogiri"
@@ -7,18 +8,26 @@ class NeteaseNewsParser < ParserEngine
 
   private
   def self.on(url)
+    return nil if url !~ /\.html$/
     @doc = Nokogiri::HTML(open(url))
-    news = ParserResult.new
+    news = NeteaseNewsParserResult.new
     news.database_to_save = "net_ease_news.db"
     news.table_to_save = "new"
-    news[:title] = news_title
-    news[:category] = news_category
-    news[:pub_date] = news_pub_date
-    news[:from_site] = news_from_site
-    news[:image] = news_image
-    news[:video] = news_video
-    news[:text] = news_text
-    news
+    news[:title] = news_title(url)
+    news[:category] = news_category(url)
+    news[:pub_date] = news_pub_date(url)
+    news[:from_site] = news_from_site(url)
+    news[:image] = news_image(url)
+    news[:video] = news_video(url)
+    news[:text] = news_text(url)
+    news[:link] = url
+    if news.validate
+      news[:pub_date] = DateTime.parse(news[:pub_date])
+      news[:emotion_score] = SentimentText.new(news[:title]).sentiment_score
+      return news
+    else
+      return nil
+    end
   end
 
   def self.is_pure_text_node(node)
@@ -29,17 +38,20 @@ class NeteaseNewsParser < ParserEngine
     end
   end
 
-  def self.news_title
+  def self.news_title(url)
+    @doc ||= Nokogiri::HTML(open(url))
     tmp = @doc.css("#h1title")
     tmp.text if tmp != nil
   end
 
-  def self.news_category
+  def self.news_category(url)
+    @doc ||= Nokogiri::HTML(open(url))
     tmp = @doc.css(".ep-crumb")[-1]
     tmp.text if tmp != nil
   end
 
-  def self.news_pub_date
+  def self.news_pub_date(url)
+    @doc ||= Nokogiri::HTML(open(url))
     @doc.css("div.ep-time-soure").each do |node|
       if node.text =~ /来源/
         pub_info = node.text.split("来源:")
@@ -49,7 +61,8 @@ class NeteaseNewsParser < ParserEngine
     return nil
   end
 
-  def self.news_from_site
+  def self.news_from_site(url)
+    @doc ||= Nokogiri::HTML(open(url))
     @doc.css("div.ep-time-soure").each do |node|
       if node.text =~ /来源/
         pub_info = node.text.split("来源:")
@@ -59,7 +72,8 @@ class NeteaseNewsParser < ParserEngine
     return nil
   end
 
-  def self.news_image
+  def self.news_image(url)
+    @doc ||= Nokogiri::HTML(open(url))
     images = []
     @doc.css("div#endText").children.each do |node|
       if node.attribute("class") != nil
@@ -79,7 +93,8 @@ class NeteaseNewsParser < ParserEngine
     images.join(" ")
   end
 
-  def self.news_video
+  def self.news_video(url)
+    @doc ||= Nokogiri::HTML(open(url))
     @doc.css("div#endText").children.each do |node|
       if node.attribute("class").to_s == "video-wrapper"
         node.css(".video-inner").each do |sub_node|
@@ -91,7 +106,8 @@ class NeteaseNewsParser < ParserEngine
     end
   end
 
-  def self.news_text
+  def self.news_text(url)
+    @doc ||= Nokogiri::HTML(open(url))
     text = ""
     @doc.css("div#endText p").each do |node|
       if is_pure_text_node(node)
