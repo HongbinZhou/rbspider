@@ -1,21 +1,36 @@
-require "sqlite3"
+class DatabaseReader
+  require "sqlite3"
+  require "date"
 
-db_file = ARGV[0]
-db = SQLite3::Database.new db_file
-result = []
-db.execute("select * from news") do |row|
-  news = Hash.new
-  news[:title] = row[1]
-  news[:category] = row[2]
-  news[:pub_date] = row[3]
-  news[:from_site_] = row[4]
-  news[:image] = row[5]
-  news[:video] = row[6]
-  news[:text] = row[7]
-  news[:link] = row[8]
-  news[:emotion_score] = row[9]
-  result.push news
+  def initialize(db_file)
+    @db = SQLite3::Database.new db_file
+  end
+
+  def to_hash_array(table_name)
+    table_schema = get_table_schema(table_name)
+    result = []
+    @db.execute("select * from #{table_name}") do |row|
+      news = {}
+      i = 0
+      table_schema.each_pair do |key, val|
+        if val =~ /datetime/ || val =~ /DateTime/
+          news[key.to_sym] = DateTime.parse(row[i])
+        else
+          news[key.to_sym] = row[i]
+        end
+        i += 1
+      end
+      result.push news
+    end
+    return result
+  end
+
+  def get_table_schema(table_name)
+    schema = {}
+    @db.execute("PRAGMA table_info(#{table_name})") do |row|
+      schema[row[1].to_sym] = row[2]
+    end
+    return schema
+  end
 end
-
-puts result[0]
 
