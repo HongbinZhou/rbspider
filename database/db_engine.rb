@@ -1,4 +1,5 @@
 require "active_record"
+require "date"
 
 module DatabaseEngine
   def self.save(object)
@@ -33,7 +34,7 @@ module DatabaseEngine
         ActiveRecord::Schema.define do
           create_table :"#{table_name}" do |table|
             object.keys.each do |column_name|
-              if object[:column_name].is_a?(DateTime)
+              if object[column_name].is_a?(DateTime)
                 table.column "#{column_name}", "datetime"
               else
                 table.column "#{column_name}", "text"
