@@ -16,13 +16,14 @@ class RbSpider
 
     if site_url && spider_mode && spider_parser
       if spider_mode == "single"
-        puts site_url
         Spidr.site(site_url.to_s) do |spider|
           spider.every_page do |page|
             parser_result = eval "
              #{spider_parser}.on \"#{page.url}\"
             "
-            DatabaseEngine.save(parser_result)
+            if parser_result != nil
+              DatabaseEngine.save(parser_result)
+            end
           end
         end
       elsif spider_mode == "multiple"
@@ -31,7 +32,9 @@ class RbSpider
             parser_result = eval "
               #{spider_parser}.on \"#{page.url}\"
             "
-            DatabaseEngine.save(parser_result)
+            if parser_result != nil
+              DatabaseEngine.save(parser_result)
+            end
           end
         end
       end
@@ -41,14 +44,12 @@ end
 
 def read_config(file)
   require "json"
-  puts file
   JSON.parse(IO.read(file))
 end
 
 # ++
 # main
 # ++
-$VERBOSE = nil
 
 options = {}
 OptionParser.new do |opts|
