@@ -1,5 +1,3 @@
-#!/usr/bin/ruby
-
 require "optparse"
 require "spidr"
 require 'nokogiri'
