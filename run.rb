@@ -5,6 +5,7 @@ require 'open-uri'
 require 'time'
 require_relative 'parser/netease_news_parser'
 require_relative "database/db_engine"
+require_relative "parser/36kr_news_pareser"
 
 class RbSpider
   def run(options)
@@ -16,22 +17,32 @@ class RbSpider
       if spider_mode == "single"
         Spidr.site(site_url.to_s) do |spider|
           spider.every_page do |page|
-            parser_result = eval "
-             #{spider_parser}.on \"#{page.url}\"
-            "
-            if parser_result != nil
-              DatabaseEngine.save(parser_result)
+            begin
+              parser_result = eval "
+               #{spider_parser}.on \"#{page.url}\"
+              "
+              if parser_result != nil
+                DatabaseEngine.save(parser_result)
+              end
+            rescue Exception => e
+              puts "Exception: parse #{page.url} failed" 
+              puts e.to_s
             end
           end
         end
       elsif spider_mode == "multiple"
         Spidr.start_at(site_url) do |spider|
           spider.every_page do |page|
-            parser_result = eval "
-              #{spider_parser}.on \"#{page.url}\"
-            "
-            if parser_result != nil
-              DatabaseEngine.save(parser_result)
+            begin
+              parser_result = eval "
+                #{spider_parser}.on \"#{page.url}\"
+              "
+              if parser_result != nil
+                DatabaseEngine.save(parser_result)
+              end
+            rescue Exception => e
+              puts "Exception: parse #{page.url} failed" 
+              puts e.to_s
             end
           end
         end
