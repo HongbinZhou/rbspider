@@ -1,0 +1,7 @@
+[
+    {
+        "site": "http://www.36kr.com/",
+        "mode": "single",
+        "parser": "Kr36NewsParser"
+    }
+]
