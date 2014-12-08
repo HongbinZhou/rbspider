@@ -3,9 +3,9 @@ class ParserResult < Hash
   attr_accessor :table_to_save
 
   def initialize
-    super()
-    @database_to_save = "test.db"
-    @table_to_save = "test"
+    super
+    @database_to_save = "news.db"
+    @table_to_save = "new"
   end
 
   def json
