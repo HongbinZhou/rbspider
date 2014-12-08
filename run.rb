@@ -72,17 +72,22 @@ OptionParser.new do |opts|
     options[:site] = val
   end
 
-  opts.on("-m ", "--mode", "Spider mode\n\tsingle: single site\n\tmultiple: multiple site") do |val|
+  opts.on("-m ", "--mode", "Spider mode\n\t\t\t\t\tsingle: single site\n\t\t\t\t\tmultiple: multiple site") do |val|
     options[:mode] = val
   end
 end.parse!
 
 if options[:configure]
   options = read_config(options[:configure])
+  threads = []
   options.each do |opts|
-    spider = RbSpider.new
-    spider.run(opts)
+    threads << Thread.new {
+      spider = RbSpider.new
+      spider.run(opts)
+    }
   end
+
+  threads.each { |t| t.join }
 else
   spider = RbSpider.new
   spider.run(options)
