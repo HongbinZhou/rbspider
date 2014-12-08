@@ -3,5 +3,10 @@
         "site": "http://news.163.com/",
         "mode": "single",
         "parser": "NeteaseNewsParser"
+    },
+    {
+        "site": "http://www.36kr.com/",
+        "mode": "single",
+        "parser": "Kr36NewsParser"
     }
 ]
