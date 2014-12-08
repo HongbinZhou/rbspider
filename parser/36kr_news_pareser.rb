@@ -11,7 +11,7 @@ class Kr36NewsParser < ParserEngine
     return nil if url !~ /\.html$/
     @doc = Nokogiri::HTML(open(url))
     news = NeteaseNewsParserResult.new
-    news.database_to_save = "net_ease_news.db"
+    news.database_to_save = "36kr_news.db"
     news.table_to_save = "new"
     news[:title] = news_title(url)
     news[:category] = news_category(url)
@@ -22,7 +22,6 @@ class Kr36NewsParser < ParserEngine
     news[:text] = news_text(url)
     news[:link] = url
     if news.validate
-      news[:pub_date] = DateTime.parse(news[:pub_date])
       news[:emotion_score] = SentimentText.new(news[:title]).sentiment_score
       return news
     else
