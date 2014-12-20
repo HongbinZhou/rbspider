@@ -24,6 +24,7 @@ class NeteaseNewsParser < ParserEngine
     if news.validate
       news[:pub_date] = DateTime.parse(news[:pub_date])
       news[:emotion_score] = SentimentText.new(news[:title]).sentiment_score
+      news[:category] = "新闻"
       return news
     else
       return nil
