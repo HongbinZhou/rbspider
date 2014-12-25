@@ -36,6 +36,10 @@ module DatabaseEngine
             object.keys.each do |column_name|
               if object[column_name].is_a?(DateTime)
                 table.column "#{column_name}", "datetime"
+              elsif object[column_name].is_a?(Integer)
+                table.column "#{column_name}", "integer"
+              elsif object[column_name].is_a?(Float)
+                table.column "#{column_name}", "float"
               else
                 table.column "#{column_name}", "text"
               end
