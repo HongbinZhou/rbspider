@@ -1,15 +1,18 @@
-* 新闻
+* DONE 新闻
+CLOSED: [2015-01-06 Tue 19:27]
 - http://news.163.com
-* 互联网
+* DONE 互联网
+CLOSED: [2015-01-06 Tue 19:27]
 - http://www.36kr.com
 - http://techcrunch.cn
 
-* 财经
+* TODO 财经
 - 
-* 时尚
+* TODO 时尚
 - 
-* 设计
+* TODO 设计
 - 
-* 体育
+* DONE 体育
+CLOSED: [2015-01-06 Tue 19:27]
 - http://sports.sina.com.cn
 
