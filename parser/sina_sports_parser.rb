@@ -84,6 +84,8 @@ if __FILE__ == $0
   # testing
   require "spidr"
   require 'pry'
+  require_relative "../database/db_engine"
+
   site_url = "http://sports.sina.com.cn"
 
   Spidr.site(site_url.to_s) do |spider|
