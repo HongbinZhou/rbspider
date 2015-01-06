@@ -7,6 +7,7 @@ require_relative 'parser/netease_news_parser'
 require_relative "database/db_engine"
 require_relative "parser/36kr_news_pareser"
 require_relative "parser/techcrunch_news_parser"
+require_relative "parser/sina_sports_parser"
 
 class RbSpider
   def run(options)

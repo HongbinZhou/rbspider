@@ -11,25 +11,11 @@ class SinaSportsParser < ParserEngine
   private
   def self.on(url)
     return nil if url !~ /\.s?html$/
-    # url="http://sports.sina.com.cn/nba/2015-01-06/09237471282.shtml"
-    # html = open(url).read
-    # html.force_encoding("gbk")
-    # html.encode!("utf-8")
-    # @doc = Nokogiri::HTML.parse html
-
-    # @doc = Nokogiri::HTML(open(url)) 
-
-    
-    # ic = Iconv.new("utf-8//translit//IGNORE","gbk")
-    # @doc = Nokogiri::HTML(ic.iconv(open(url).read))
-
     response = open(url)
-    # @doc = Nokogiri::HTML.parse(response)
     @doc = Nokogiri(response)
-    @doc.encoding = "bg2312"
     
     news = NeteaseNewsParserResult.new
-    news.database_to_save = "sports_news.db"
+    news.database_to_save = "sina_sports_news.db"
     news.table_to_save    = "new"
     news[:title]          = news_title(url) # must
     news[:pub_date]       = news_pub_date(url) # must
