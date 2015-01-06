@@ -18,5 +18,10 @@
         "site": "http://sports.sina.com.cn",
         "mode": "single",
         "parser": "SinaSportsParser"
+    },
+    {
+        "site": "http://money.163.com/",
+        "mode": "single",
+        "parser": "NeteaseMoneyParser"
     }
 ]
