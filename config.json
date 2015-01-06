@@ -13,5 +13,10 @@
         "site": "http://techcrunch.cn/",
         "mode": "single",
         "parser": "TechcrunchNewsParser"
+    },
+    {
+        "site": "http://sports.sina.com.cn",
+        "mode": "single",
+        "parser": "SinaSportsParser"
     }
 ]
