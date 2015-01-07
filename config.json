@@ -23,5 +23,10 @@
         "site": "http://money.163.com/",
         "mode": "single",
         "parser": "NeteaseMoneyParser"
+    },
+    {
+        "site": "http://www.zcool.com.cn/",
+        "mode": "single",
+        "parser": "ZcoolParser"
     }
 ]

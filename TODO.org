@@ -10,9 +10,10 @@ CLOSED: [2015-01-06 Tue 19:27]
 CLOSED: [2015-01-07 Wed 00:00]
 - http://money.163.com/
 * TODO 时尚
-- 
-* TODO 设计
-- 
+- http://www.gofaner.com/
+* DONE 设计
+CLOSED: [2015-01-08 Thu 00:00]
+- http://www.zcool.com.cn/
 * DONE 体育
 CLOSED: [2015-01-06 Tue 19:27]
 - http://sports.sina.com.cn
