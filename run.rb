@@ -10,6 +10,7 @@ require_relative "parser/techcrunch_news_parser"
 require_relative "parser/sina_sports_parser"
 require_relative "parser/netease_money_parser"
 require_relative "parser/zcool_parser"
+require_relative "parser/trends_parser"
 
 class RbSpider
   def run(options)

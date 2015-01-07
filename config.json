@@ -28,5 +28,11 @@
         "site": "http://www.zcool.com.cn/",
         "mode": "single",
         "parser": "ZcoolParser"
+    },
+    {
+        "site": "http://www.trends.com.cn/"
+        "mode": "single",
+        "parser": "TrendsParser"
     }
+
 ]
